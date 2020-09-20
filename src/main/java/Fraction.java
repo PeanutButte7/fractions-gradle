@@ -26,7 +26,7 @@ public class Fraction implements IFraction {
         int n1 = lcm / denominator * numerator;
         int n2 = lcm / other.getDenominator() * other.getNumerator();
 
-        return new Fraction(n1 + n2, lcm);
+        return createNormalised(n1 + n2, lcm);
     }
 
     @Override
@@ -35,20 +35,20 @@ public class Fraction implements IFraction {
         int n1 = lcm / denominator * numerator;
         int n2 = lcm / other.getDenominator() * other.getNumerator();
 
-        return new Fraction(n1 - n2, lcm);
+        return createNormalised(n1 - n2, lcm);
     }
 
     @Override
     public IFraction times(IFraction other) {
-        return new Fraction(numerator * other.getNumerator(), denominator * other.getDenominator());
+        return createNormalised(numerator * other.getNumerator(), denominator * other.getDenominator());
     }
 
     @Override
     public IFraction dividedBy(IFraction other) {
-        return new Fraction(numerator * other.getDenominator(), denominator * other.getNumerator());
+        return createNormalised(numerator * other.getDenominator(), denominator * other.getNumerator());
     }
 
-    public static Fraction createNormalised(Integer numerator, Integer denominator) {
+    private static Fraction createNormalised(Integer numerator, Integer denominator) {
         int lcd = getLCD(numerator, denominator);
 
         while(lcd > 1){
