@@ -22,30 +22,77 @@ public class Fraction implements IFraction {
 
     @Override
     public IFraction plus(IFraction other) {
-        throw new UnsupportedOperationException();
+        int lcm = getLCM(denominator, other.getDenominator());
+        int n1 = lcm / denominator * numerator;
+        int n2 = lcm / other.getDenominator() * other.getNumerator();
+
+        return new Fraction(n1 + n2, lcm);
     }
 
     @Override
     public IFraction minus(IFraction other) {
-        throw new UnsupportedOperationException();
+        int lcm = getLCM(denominator, other.getDenominator());
+        int n1 = lcm / denominator * numerator;
+        int n2 = lcm / other.getDenominator() * other.getNumerator();
+
+        return new Fraction(n1 - n2, lcm);
     }
 
     @Override
     public IFraction times(IFraction other) {
-        throw new UnsupportedOperationException();
+        return new Fraction(numerator * other.getNumerator(), denominator * other.getDenominator());
     }
 
     @Override
     public IFraction dividedBy(IFraction other) {
-        throw new UnsupportedOperationException();
+        return new Fraction(numerator * other.getDenominator(), denominator * other.getNumerator());
     }
 
     public static Fraction createNormalised(Integer numerator, Integer denominator) {
-        throw new UnsupportedOperationException();
+        int lcd = getLCD(numerator, denominator);
+
+        while(lcd > 1){
+            numerator /= lcd;
+            denominator /= lcd;
+            lcd = getLCD(numerator, denominator);
+        }
+
+        return new Fraction(numerator, denominator);
     }
 
     @Override
     public String toString() {
         return "Fraction " + numerator + "|" + denominator;
+    }
+
+    private int getLCM(int n1, int n2) {
+        if (n1 == 0 || n2 == 0) {
+            return 0;
+        }
+        int absNumber1 = Math.abs(n1);
+        int absNumber2 = Math.abs(n2);
+        int absHigherNumber = Math.max(absNumber1, absNumber2);
+        int absLowerNumber = Math.min(absNumber1, absNumber2);
+        int lcm = absHigherNumber;
+        while (lcm % absLowerNumber != 0) {
+            lcm += absHigherNumber;
+        }
+        return lcm;
+    }
+
+    private static int getLCD(int n1, int n2) {
+        if (n2 == 0) {
+            return n1;
+        }
+        return getLCD(n2, n1 % n2);
+    }
+
+    public static void main(String[] args) {
+        Fraction f1 = new Fraction(2, 3);
+        Fraction f2 = new Fraction(3, 2);
+        Fraction f3 = new Fraction(6, 22);
+
+        System.out.println(f1.plus(f2).getNumerator() + "/" + f1.plus(f2).getDenominator());
+        System.out.println(f3.createNormalised(f3.getNumerator(), f3.getDenominator()));
     }
 }
